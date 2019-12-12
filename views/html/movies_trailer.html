@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Shazam - Watch Movie Trailers</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="../js/jquery.bootpag.js"></script>
+
+    <!-- Font Awesome Icons -->
+    <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+
+    <link href="https://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet"
+        type="text/css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Merriweather+Sans:400,700" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic'
+        rel='stylesheet' type='text/css'>
+
+    <!-- Plugin CSS -->
+    <!-- <link href="/vendor/magnific-popup/magnific-popup.css" rel="stylesheet"> -->
+
+    <!-- Theme CSS - Includes Bootstrap -->
+    <link href="../css/creative.css" rel="stylesheet">
+
+
+</head>
+
+<body id="page-top container" onload="init('<%=JSON.stringify(data)%>')">
+
+    <div class="header row">
+        <div class="title-text col-5">Shazam</div>
+        <form autocomplete="off" action="#" class="title-content col-7">
+            <div class="autocomplete">
+                <input id="myInput" type="text" name="myCountry" autocomplete="off" placeholder="Movie">
+            </div>
+            <div>
+                <select onchange="setGenre(this.value)">
+                    <option value="drama">Drama</option>
+                    <option value="action">Action</option>
+                    <option value="romance">Romance</option>
+                </select>
+            </div>
+            <div>
+                <select onchange="setFilter(this.value)">
+                    <option value="all">All</option>
+                    <option value="trending">Trending</option>
+                    <option value="ratings">Highly Rated</option>
+                </select>
+            </div>
+            <div>
+                <input type="submit" onclick="reloadMovieList()">
+            </div>
+        </form>
+    </div>
+    <div class="container">
+        <div class="examples row" id="image-list">
+
+            <% data.list.forEach(function(movie) { %>
+            <div data-toggle="modal" data-target="#myModal" onclick="openModal('<%=JSON.stringify(movie)%>')"
+                class="col-3 p-3">
+                <div class="pb-2">
+                    <img id="box1" src='<%= movie.posters %>' class=" display-image" />
+                </div>
+                <a href="#" class="modal-toggle"><%= movie.title %></a>
+            </div>
+            <% }); %>
+
+
+
+        </div>
+        <div class="text-center">
+            <div id="page-selection"></div>
+        </div>
+    </div>
+
+
+
+    <!--Footer -->
+    <footer class=" bg-light">
+        <div class="container">
+            <div class="small text-center text-muted">Copyright &copy; 2019</div>
+        </div>
+    </footer>
+
+
+
+    <!--Plugin JavaScript-- >
+    < !-- < script src = "/vendor/jquery-easing/jquery.easing.min.js" ></script>
+            <script src="/vendor/magnific-popup/jquery.magnific-popup.min.js"></script> -->
+
+    <!--Custom scripts for this template-->
+    <script src="../js/creative.js"></script>
+
+
+    <!-- Modal -->
+
+    <div class="modal" id="myModal" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-wrapper modal-content modal-transition">
+                <div class="modal-header">
+                    <h2 class="modal-heading" id="modalMovieTitle">Avengers End Game</h2>
+                    <button id="close-button" type="button" class="modal-close close" onclick="closePopup()"
+                        data-dismiss="modal">&times;</button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="modal-content">
+                        <div class="o-video" id="youtubeVideoLink">
+                            <iframe src="https://www.youtube.com/embed/Kch8n4tcOZQ" allowfullscreen></iframe>
+                        </div>
+
+                        <fieldset class="rating">
+                            <input type="radio" id="star5" name="rating" value="5" /><label class="full" for="star5"
+                                title="Awesome - 5 stars"></label>
+                            <input type="radio" id="star4half" name="rating" value="4.5" /><label class="half"
+                                for="star4half" title="Pretty good - 4.5 stars"></label>
+                            <input type="radio" id="star4" name="rating" value="4" /><label class="full" for="star4"
+                                title="Pretty good - 4 stars"></label>
+                            <input type="radio" id="star3half" name="rating" value="3.5" /><label class="half"
+                                for="star3half" title="Meh - 3.5 stars"></label>
+                            <input type="radio" id="star3" name="rating" value="3" /><label class="full" for="star3"
+                                title="Meh - 3 stars"></label>
+                            <input type="radio" id="star2half" name="rating" value="2.5" /><label class="half"
+                                for="star2half" title="Kinda bad - 2.5 stars"></label>
+                            <input type="radio" id="star2" name="rating" value="2" /><label class="full" for="star2"
+                                title="Kinda bad - 2 stars"></label>
+                            <input type="radio" id="star1half" name="rating" value="1.5" /><label class="half"
+                                for="star1half" title="Meh - 1.5 stars"></label>
+                            <input type="radio" id="star1" name="rating" value="1" /><label class="full" for="star1"
+                                title="Sucks big time - 1 star"></label>
+                            <input type="radio" id="starhalf" name="rating" value="0.5" /><label class="half"
+                                for="starhalf" title="Sucks big time - 0.5 stars"></label>
+                        </fieldset>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

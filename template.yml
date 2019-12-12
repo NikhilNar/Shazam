@@ -1,0 +1,101 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: 'AWS::Serverless-2016-10-31'
+Resources:  
+  LFMovieList:
+    Type: AWS::Serverless::Function
+    Properties:
+      Runtime: nodejs10.x
+      CodeUri: ./lambda-functions
+      Handler: movies_list.handler
+      Events:
+        HttpPost:
+          Type: Api
+          Properties:
+            Path: '/movies-list'
+            Method: get
+      Policies:
+        - CloudWatchLogsFullAccess                                   
+  # InputValidatorAPI:
+  #   Type: AWS::Serverless::Api
+  #   Properties:
+  #     StageName: Prod
+  #     DefinitionBody:
+  #       'Fn::Transform':
+  #         Name: 'AWS::Include'
+  #         Parameters:
+  #           Location: s3://cc-chatbot-niknar/swagger.yaml
+  # LF0:
+  #   Type: AWS::Serverless::Function
+  #   Properties:
+  #     Runtime: nodejs10.x
+  #     CodeUri: ./lambda-functions
+  #     Handler: lex_input_validator.handler
+  #     Events:
+  #       ValidateInputAPI:
+  #         Type: Api
+  #         Properties:
+  #           RestApiId: !Ref InputValidatorAPI
+  #           Path: /chatbot
+  #           Method: post
+  #     Policies:
+  #       - AmazonLexRunBotsOnly
+  #       - CloudWatchLogsFullAccess
+  # Logic will be changed      
+  # LF1:
+  #   Type: AWS::Serverless::Function
+  #   Properties:
+  #     Runtime: python3.7
+  #     CodeUri: ./lambda-functions
+  #     Handler: lex_response_handler.lambda_handler
+  #     Policies:
+  #       - AmazonSQSFullAccess
+
+  # Logic will be changed    
+  # LF2:
+  #   Type: AWS::Serverless::Function
+  #   Properties:
+  #     Runtime: nodejs10.x
+  #     CodeUri: ./lambda-functions
+  #     Handler: send_notifications.handler
+  #     Events:
+  #       CloudwatchCronEvent:
+  #         Type: Schedule
+  #         Properties:
+  #           Schedule: rate(1 minute)
+  #     Policies:
+  #       - CloudWatchLogsFullAccess
+  #       - AmazonSNSFullAccess
+  #       - AmazonDynamoDBReadOnlyAccess
+  #       - AmazonSQSFullAccess
+
+  # Sample for SQS, to be changed    
+  # SQSQueue:
+  #   Type: AWS::SQS::Queue
+  #   Properties:
+  #     QueueName: "SQSQueue"
+
+  # Sample for Elasticsearch, to be changed
+  # ElasticSearchInstance:
+  #   Type: AWS::Elasticsearch::Domain
+  #   Properties:
+  #     DomainName: "test"
+  #     ElasticsearchClusterConfig:
+  #       DedicatedMasterEnabled: "true"
+  #       InstanceCount: "2"
+  #       ZoneAwarenessEnabled: "true"
+  #       InstanceType: "m3.medium.elasticsearch"
+  #       DedicatedMasterType: "m3.medium.elasticsearch"
+  #       DedicatedMasterCount: "3"
+  #     EBSOptions:
+  #       EBSEnabled: true
+  #       Iops: 0
+  #       VolumeSize: 20
+  #       VolumeType: "gp2"
+  #     SnapshotOptions:
+  #       AutomatedSnapshotStartHour: "0"                 
+# Globals:
+#   Api:
+#     Cors:
+#       AllowMethods: "'*'"
+#       AllowHeaders: "'*'"
+#       AllowOrigin: "'*'"

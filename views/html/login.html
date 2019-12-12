@@ -1,0 +1,82 @@
+<html>
+
+<head>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="/js/login.js"></script>
+    <script src="/js/toastr.js"></script>
+    <script src="/js/api.js"></script>
+    <link href="/css/main.css" rel="stylesheet" id="main-css">
+    <link href="/css/toastr.css" rel="stylesheet" id="main-css">
+</head>
+
+<body id="LoginForm">
+    <div class="container">
+        <div class="login-form">
+            <div class="main-div-login">
+                <div class="container">
+                    <ul class="nav nav-tabs nav-justified">
+                        <li class="active" id="loginTab"><a onclick="toggleTab(1)">Login</a></li>
+                        <li id="registerTab"><a onclick="toggleTab(2)">Register</a></li>
+                    </ul>
+                    <br>
+                </div>
+                <div id="loginForm" class="form-wrapper">
+
+                    <div class="form-group">
+                        <input type="email" class="form-control" id="inputLoginEmail" placeholder="Email Address">
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <input type="password" class="form-control" id="inputLoginPassword" placeholder="Password">
+
+                    </div>
+                    <div class="forgot">
+                    </div>
+                    <button type="submit" class="btn btn-primary" onclick="signIn()">Sign In</button>
+
+                </div>
+
+                <div id="registerForm" class="form-wrapper register-form">
+
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="inputFirstName" name="first_name" placeholder="First Name">
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <input type="text" class="form-control" id="inputLastName" name="last_name" placeholder="Last Name">
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <input type="text" class="form-control" id="inputRegisterEmail" name="email" placeholder="Email">
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <input type="password" class="form-control" id="inputRegisterPassword" name="password"
+                            placeholder="Password">
+
+                    </div>
+                    <div class="forgot">
+                    </div>
+                    <button id="register-button" type="submit" onclick="registerUser()" class="btn btn-primary">Register</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+
+</body>
+
+</html>

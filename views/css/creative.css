@@ -1,0 +1,357 @@
+html {
+  margin:0;
+   background: #0000;
+   font-family: helvetica;
+   max-width:1920px;
+}
+
+body {
+   margin: 0;
+}
+
+#exampleText1 {
+   display: hidden;
+}
+
+.padding-1rem{
+  padding-bottom: 1rem;
+}
+
+.container {
+
+   width: 1300px;
+   height: 100%;
+   margin: 0 auto;
+   padding: 30px;
+}
+
+
+h1 {
+   margin: 0;
+   color:#bbb;
+   font-size:1.85em;
+}
+
+.examples {
+   text-align: center;
+   margin-left:15px;
+}
+
+.image:hover {
+   -webkit-transform: scale(1.35);
+   transform: scale(1.35);
+   opacity: .9;
+}
+
+.image {
+   -webkit-transition: all 0.7s ease;
+   transition: all 0.7s ease;
+   padding: 15px;
+   margin:auto;
+
+}
+
+/*#example1:hover {
+   opacity: .1;
+}*/
+
+span.text-content {
+   
+   color: white;
+   cursor: pointer;
+   display: table;
+   height: 150px;
+   left: 15px;
+   position: absolute;
+   top: 15px;
+   width: 280px;
+   opacity: 0;
+   -webkit-transition: opacity 500ms;
+   -moz-transition: opacity 500ms;
+   -o-transition: opacity 500ms;
+   transition: opacity 500ms;
+}
+
+span.text-content span {
+   display: table-cell;
+   text-align: center;
+   vertical-align: middle;
+}
+
+ul.img-list {
+   list-style-type: none;
+   margin: 0 auto;
+   text-align: center;
+  
+}
+
+ul.img-list li {
+   display: inline-block;
+   height: 300px;
+   margin: 0 1em 1em 0;
+   position: relative;
+   padding-left: 20px;
+   padding-right: 20px;
+   width: 180px;
+}
+
+ul.img-list li:hover span.text-content {
+   opacity: 1;
+   -webkit-transition: all 0.7s ease;
+   transition: all 0.7s ease;
+}
+a:link {
+    text-decoration: none;
+}
+
+.banner{
+   text-align:center;
+   font-weight:800;
+   padding-bottom:80px;
+}
+.sectionTitle{
+   padding-left:40px;
+   border-bottom:2px solid rgba(0, 0, 0, 0.2);
+   margin-bottom:20px;
+}
+li.image{
+   margin:auto;
+}
+
+.sidenav {
+    display: none;
+    height: 400px;
+    width: 100%;
+    
+    z-index: 6;
+    top: 306px;
+    position:relative;
+    color:#eee;
+    left:0;
+    position:absolute;
+    background: #555;
+    background-repeat: no-repeat;
+background-size: 100% 100%;
+    overflow-x: hidden;
+    padding-top: 60px;
+}
+
+.sidenav a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #bbb;
+    display: block;
+    transition: 0.3s
+}
+
+.sidenav a:hover, .offcanvas a:focus{
+    color: #f1f1f1;
+}
+
+.sidenav .closebtn {
+    position: absolute;
+    top: 0px;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+}
+
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
+}
+.header{
+  margin: 0;
+  width:100%;
+  padding-left:15%;
+  background:#222;
+  color:grey;
+  font-weight: 700;
+  font-size:1.5em;
+}
+.display-image{
+  height:240px;
+  width:182px;
+}
+
+.product-list div{
+  text-align: center;
+}
+.title-text{
+  padding: 0.5rem;
+  height: 100%;
+}
+.title-content{
+  padding: 0;
+  height: 100%;
+  display: inline-flex;
+}
+p{
+  margin:0;
+}
+#row2{
+  position:relative;
+}
+
+
+
+input {
+  border: 1px solid transparent;
+  background-color: #f1f1f1;
+  padding: 10px;
+  font-size: 16px;
+}
+
+input[type=text] {
+  padding: 0.25rem 0.25rem 0.25rem 0.5rem;
+  border-radius: 7px;
+  display: table-cell;
+  vertical-align: sub;
+}
+
+select{
+  margin-left: 1rem;
+  font-size: 1rem;
+  display: table-cell;
+    vertical-align: sub;
+    height: 2.15rem;
+}
+
+input[type=submit] {
+  background-color: DodgerBlue;
+  cursor: pointer;
+  display: table-cell;
+  vertical-align: sub;
+  margin-left: 2rem;
+  font-size: 1rem;
+  color: #fff;
+  cursor: pointer;
+  background: #47cf73;
+  padding: 4px 13px;
+  margin-left: 1rem;
+  text-shadow: none;
+  border-radius: 4px;
+  cursor: pointer;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  text-decoration: none !important;
+  text-align: center;
+  display: table-cell;
+}
+
+.autocomplete-items {
+  position: absolute;
+  border-bottom: none;
+  border-top: none;
+  z-index: 99;
+  top: 100%;
+  left: 0;
+  right: 0;
+}
+
+.autocomplete-items div {
+  padding: 5px 10px;
+  cursor: pointer;
+  max-width: 20%;
+  font-weight: 500;
+  font-size: 1rem;
+  background-color: #fff;
+  border-bottom: 1px solid #d4d4d4;
+}
+
+/*when hovering an item:*/
+.autocomplete-items div:hover {
+  background-color: #e9e9e9; 
+}
+
+/*when navigating through the items using the arrow keys:*/
+.autocomplete-active {
+  background-color: DodgerBlue !important; 
+  color: #ffffff; 
+}
+
+
+
+.modal-header {
+position: relative;
+background-color: #fff;
+box-shadow: 0 1px 2px hsla(0, 0%, 0%, 0.06);
+border-bottom: 1px solid #e8e8e8;
+padding: 0.75rem 1rem;
+}
+
+.modal-close {
+  color: #aaa;
+  background: none;
+  border: 0;
+}
+
+.modal-close:hover {
+color: #777;
+}
+
+.modal-heading {
+font-size: 1.125em;
+margin: 0;
+-webkit-font-smoothing: antialiased;
+-moz-osx-font-smoothing: grayscale;
+}
+
+.modal-content > *:first-child {
+margin-top: 0;
+}
+
+.modal-content > *:last-child {
+margin-bottom: 0;
+}
+
+.o-video {
+  width: 100%;
+  height: 0;
+  position: relative;
+  padding-top: 56.25%; /* 9 / 16 * 100 */
+}
+.o-video > iframe {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  border: 0;
+}
+
+.rating { 
+  border: none;
+  float: left;
+}
+
+.rating > input { display: none; } 
+.rating > label:before { 
+  margin: 5px;
+  font-size: 1.25em;
+  font-family: FontAwesome;
+  display: inline-block;
+  content: "\f005";
+}
+
+.rating > .half:before { 
+  content: "\f089";
+  position: absolute;
+}
+
+.rating > label { 
+  color: #ddd; 
+ float: right; 
+}
+
+/***** CSS Magic to Highlight Stars on Hover *****/
+
+.rating > input:checked ~ label, /* show gold star when clicked */
+.rating:not(:checked) > label:hover, /* hover current star */
+.rating:not(:checked) > label:hover ~ label { color: #FFD700;  } /* hover previous stars in list */
+
+.rating > input:checked + label:hover, /* hover current star when changing rating */
+.rating > input:checked ~ label:hover,
+.rating > label:hover ~ input:checked ~ label, /* lighten current selection */
+.rating > input:checked ~ label:hover ~ label { color: #FFED85;  } 
