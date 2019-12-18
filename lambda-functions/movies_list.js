@@ -1,153 +1,112 @@
 'use strict';
 
 var AWS = require('aws-sdk')
+const MongoClient = require('mongodb').MongoClient;
+const uri = "mongodb+srv://nikhil:nikhil@shazamdb-ci1rz.mongodb.net/test?retryWrites=true&w=majority";
 
 exports.handler = (event, context, callback) => {
+    context.callbackWaitsForEmptyEventLoop = false;
     let filter = event.queryStringParameters.filter,
         genre = event.queryStringParameters.genre,
-        page = event.queryStringParameters.page,
-        promise;
+        page = event.queryStringParameters.page;
 
-
-    const MongoClient = require('mongodb').MongoClient;
-    const uri = "mongodb+srv://nikhil:nikhil@shazamdb-ci1rz.mongodb.net/test?retryWrites=true&w=majority";
-    const client = new MongoClient(uri, { useNewUrlParser: true });
-    client.connect(err => {
-        const collection = client.db("movie_analysis").collection("users");
-        // perform actions on the collection object
-        console.log("collection======");
-        console.log(collection);
-        if (err) {
-            console.log("Error occured while connecting mongodb");
-            console.log(err);
-        }
-        client.close();
-    });
-
-
-    // switch (filter) {
-    //     case "ratings": promise = TopRatedMoviesModel.find({})
-    //         .select('movie_id')
-    //         .populate({
-    //             path: 'movie_collection',
-    //             select: 'title youtube_id posters genres',
-    //             match: {
-    //                 genres: {
-    //                     $regex: genre,
-    //                     $options: 'i'
-    //                 }
-    //             }
-    //         })
-    //         break;
-    //     case "trending": promise = TrendingMoviesModel.find({})
-    //         .select('movie_id')
-    //         .populate({
-    //             path: 'movie_collection',
-    //             select: 'title youtube_id posters genres',
-    //             match: {
-    //                 genres: {
-    //                     $regex: genre,
-    //                     $options: 'i'
-    //                 }
-    //             }
-    //         })
-    //         break;
-    //     default: promise = MoviesModel.find({
-    //         genres: {
-    //             $regex: genre,
-    //             $options: 'i'
-    //         }
-    //     })
-    //         .select('movie_id title youtube_id posters genres')
-    // }
-
-
-    // promise
-    //     .then(data => {
-    //         if (filter != "all") {
-    //             data = data.filter(doc => {
-    //                 return doc.movie_collection != null
-    //             }).map(doc => {
-    //                 return doc.movie_collection
-    //             })
-    //         }
-
-    //         let response = {
-    //             "total_pages": Math.ceil(data.length / 10),
-    //             "data": []
-    //         }
-
-    //         for (let i = page * 12 - 12; i < page * 12; i++) {
-    //             if (data.length > i)
-    //                 response.data.push(data[i])
-    //             else break;
-    //         }
-
-    //         callback(null, {
-    //             statusCode: 200,
-    //             headers: {
-    //                 "content-type": "application/json",
-    //                 "Access-Control-Allow-Origin": "*"
-    //             },
-    //             body: JSON.stringify(response)
-    //         })
-    //     })
-    //     .catch(err => {
-    //         console.log("err======")
-    //         console.log(err)
-    //         callback(null, {
-    //             statusCode: 500,
-    //             headers: {
-    //                 "content-type": "application/json",
-    //                 "Access-Control-Allow-Origin": "*"
-    //             },
-    //             body: {}
-    //         })
-    //     })
-
-    callback(null, {
-        statusCode: 500,
-        headers: {
-            "content-type": "application/json",
-            "Access-Control-Allow-Origin": "*"
-        },
-        body: {}
+    const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+    let mongoClientPromise = new Promise((resolve, reject) => {
+        client.connect(err => {
+            if (err) {
+                reject(err);
+            }
+            else {
+                resolve(client);
+            }
+        });
     })
-    // let message = JSON.parse(event.body).message,
-    //     userId = JSON.parse(event.body).userId,
-    //     responseBody = {},
-    //     statusCode = 200
 
-    // let lexRunTime = new AWS.LexRuntime();
-    // let params = {
-    //     botAlias: 'reeco',
-    //     botName: 'Reeco',
-    //     inputText: message,
-    //     userId: userId
-    // }
+    mongoClientPromise.then(client => {
+        switch (filter) {
+            case "ratings": return client.db("movie_analysis").collection("top_rated_movies")
+                .aggregate([{ $lookup: { from: 'movies', localField: 'movie_id', foreignField: 'movie_id', as: 'movie' } }, {
+                    $match: {
+                        $and: [{ "movie.genres": { $regex: genre, $options: "i" } }]
+                    }
+                }, { $unwind: '$movie' },
+                {
+                    $project: {
+                        _id: "$movie._id",
+                        movie_id: "$movie.movie_id",
+                        title: "$movie.title",
+                        genres: "$movie.genres",
+                        youtube_id: "$movie.youtube_id",
+                        posters: "$movie.posters"
+                    }
+                }]).toArray()
+            case "trending": return client.db("movie_analysis").collection("trending_movies")
+                .aggregate([{ $lookup: { from: 'movies', localField: 'movie_id', foreignField: 'movie_id', as: 'movie' } }, {
+                    $match: {
+                        $and: [{ "movie.genres": { $regex: genre, $options: "i" } }]
+                    }
+                }, { $unwind: '$movie' },
+                {
+                    $project: {
+                        _id: "$movie._id",
+                        movie_id: "$movie.movie_id",
+                        title: "$movie.title",
+                        genres: "$movie.genres",
+                        youtube_id: "$movie.youtube_id",
+                        posters: "$movie.posters"
+                    }
+                }]).toArray()
+            default: return client.db("movie_analysis").collection("movies").find({
+                genres: {
+                    $regex: genre,
+                    $options: 'i'
+                }
+            }, { movie_id: 1, title: 1, youtube_id: 1, posters: 1, genres: 1 })
+                .toArray()
+        }
+    })
+        .then(data => {
+            console.log("data======================================", data.length)
+            console.log("data=========", JSON.stringify(data));
+            // if (filter != "all") {
+            //     data = data.filter(doc => {
+            //         return doc.movie_collection != null
+            //     }).map(doc => {
+            //         return doc.movie_collection
+            //     })
+            // }
 
-    // let promise = new Promise((resolve, reject) => {
-    //     lexRunTime.postText(params, function (err, data) {
-    //         if (err) {
-    //             console.log("err =", err)
-    //             statusCode = 500
-    //             responseBody.message = "Did not get a response from Lex"
-    //             resolve(responseBody)
-    //         }
-    //         console.log("message received from Lex =", data)
-    //         responseBody.message = data
-    //         resolve(responseBody)
-    //     })
-    // })
+            let response = {
+                "total_pages": Math.ceil(data.length / 10),
+                "data": []
+            }
 
-    // promise.then((responseBody) => {
-    // callback(null, {
-    //     statusCode: statusCode,
-    //     headers: {
-    //         "content-type": "application/json",
-    //         "Access-Control-Allow-Origin": "*"
-    //     },
-    //     body: JSON.stringify(responseBody)
-    // })
-    // })
+            for (let i = page * 12 - 12; i < page * 12; i++) {
+                if (data.length > i)
+                    response.data.push(data[i])
+                else break;
+            }
+
+            console.log("response=", response);
+
+            callback(null, {
+                statusCode: 200,
+                headers: {
+                    "content-type": "application/json",
+                    "Access-Control-Allow-Origin": "*"
+                },
+                body: JSON.stringify(response)
+            })
+        })
+        .catch(err => {
+            console.log("err=", err)
+            callback(null, {
+                statusCode: 500,
+                headers: {
+                    "content-type": "application/json",
+                    "Access-Control-Allow-Origin": "*"
+                },
+                body: {}
+            })
+        })
 };
