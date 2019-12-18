@@ -192,25 +192,22 @@ function openModal(movieObj) {
   elem.innerHTML = `<button id="close-button" type="button" class="modal-close close" onclick='` + closeVal + `'
   data-dismiss="modal">&times;</button>`
   let req = {
-    "topic": "movie_users_mapping",
-    "data": {
-      "user_id": userId,
-      "movie_id": movie.movie_id
-    }
+    "user_id": userId,
+    "movie_id": movie.movie_id
   }
 
 
   $.ajax({
-    url: "http://localhost:3000/user/movie-watched",
+    url: "https://s4g2kaqznk.execute-api.us-east-1.amazonaws.com/Prod/movies-watched",
     method: "POST",
     data: JSON.stringify(req),
     dataType: 'json',
     contentType: "application/json",
     success: function (data) {
       if (data.status == 200) {
-        console.log("data published into Kafka")
+        console.log("data published into SQS")
       } else {
-        console.log("error occured while publishing into Kafka")
+        console.log("error occured while publishing into SQS")
       }
     },
   });
@@ -225,26 +222,23 @@ function closePopup(movie) {
 
   if (rating && movie) {
     let req = {
-      "topic": "movie_ratings",
-      "data": {
-        "user_id": userId,
-        "movie_id": movie.movie_id,
-        "rating": rating
-      }
+      "user_id": userId,
+      "movie_id": movie.movie_id,
+      "rating": rating
     }
 
 
     $.ajax({
-      url: "http://localhost:3000/user/movie-watched",
+      url: "https://s4g2kaqznk.execute-api.us-east-1.amazonaws.com/Prod/movies-watched",
       method: "POST",
       data: JSON.stringify(req),
       dataType: 'json',
       contentType: "application/json",
       success: function (data) {
         if (data.status == 200) {
-          console.log("data published into Kafka on close pop")
+          console.log("data published into SQS on close pop")
         } else {
-          console.log("error occured while publishing into Kafka")
+          console.log("error occured while publishing into SQS")
         }
       },
     });

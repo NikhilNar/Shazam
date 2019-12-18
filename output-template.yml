@@ -5,7 +5,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Runtime: nodejs10.x
-      CodeUri: s3://shazam-sam-templates/a8da94c09dbcd2b34ab26c8a6de29406
+      CodeUri: s3://shazam-sam-templates/d279d5b405a4ae96d80a7df0550816b4
       Handler: movies_list.handler
       Events:
         HttpPost:
@@ -15,6 +15,25 @@ Resources:
             Method: get
       Policies:
       - CloudWatchLogsFullAccess
+  LFMovieViews:
+    Type: AWS::Serverless::Function
+    Properties:
+      Runtime: nodejs10.x
+      CodeUri: s3://shazam-sam-templates/d279d5b405a4ae96d80a7df0550816b4
+      Handler: movies_views.handler
+      Events:
+        HttpPost:
+          Type: Api
+          Properties:
+            Path: /movies-watched
+            Method: post
+      Policies:
+      - CloudWatchLogsFullAccess
+      - AmazonSQSFullAccess
+  SQSViewsQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: SQSViewsQueue
 Globals:
   Api:
     Cors:

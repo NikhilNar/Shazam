@@ -14,7 +14,22 @@ Resources:
             Path: '/movies-list'
             Method: get
       Policies:
-        - CloudWatchLogsFullAccess                                   
+        - CloudWatchLogsFullAccess   
+  LFMovieViews:
+    Type: AWS::Serverless::Function
+    Properties:
+      Runtime: nodejs10.x
+      CodeUri: ./lambda-functions
+      Handler: movies_views.handler
+      Events:
+        HttpPost:
+          Type: Api
+          Properties:
+            Path: '/movies-watched'
+            Method: post
+      Policies:
+        - CloudWatchLogsFullAccess 
+        - AmazonSQSFullAccess                                       
   # InputValidatorAPI:
   #   Type: AWS::Serverless::Api
   #   Properties:
@@ -69,10 +84,10 @@ Resources:
   #       - AmazonSQSFullAccess
 
   # Sample for SQS, to be changed    
-  # SQSQueue:
-  #   Type: AWS::SQS::Queue
-  #   Properties:
-  #     QueueName: "SQSQueue"
+  SQSViewsQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: "SQSViewsQueue"
 
   # Sample for Elasticsearch, to be changed
   # ElasticSearchInstance:
