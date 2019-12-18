@@ -93,9 +93,9 @@ Resources:
   #       VolumeType: "gp2"
   #     SnapshotOptions:
   #       AutomatedSnapshotStartHour: "0"                 
-# Globals:
-#   Api:
-#     Cors:
-#       AllowMethods: "'*'"
-#       AllowHeaders: "'*'"
-#       AllowOrigin: "'*'"
+Globals:
+  Api:
+    Cors:
+      AllowMethods: "'*'"
+      AllowHeaders: "'*'"
+      AllowOrigin: "'*'"

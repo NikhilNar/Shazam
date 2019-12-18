@@ -1,12 +1,14 @@
 // init bootpag
 let filter, genre, pages
 
-function init(data) {
-  let movieResponse = JSON.parse(data);
+function init() {
   filter = "all";
   genre = "drama";
-  pages = movieResponse.total_pages
-  setPagination(pages)
+  listAPICall(1).then(data => {
+    pages = data.total_pages
+    setPagination(pages)
+  })
+
 }
 
 function setFilter(value) {
@@ -27,6 +29,7 @@ function reloadMovieList() {
 }
 
 function setPagination(pages) {
+  console.log("set pagination called")
   let config = {
     total: pages,
     page: 1,
@@ -43,15 +46,15 @@ function listAPICall(page) {
 
   return new Promise((resolve, reject) => {
     $.ajax({
-      url: "http://localhost:3000/movies/list?filter=" + filter + "&genre=" + genre + "&page=" + page,
+      url: "https://s4g2kaqznk.execute-api.us-east-1.amazonaws.com/Prod/movies-list?filter=" + filter + "&genre=" + genre + "&page=" + page,
       method: "GET",
       dataType: 'json',
       contentType: "application/json",
       success: function (data) {
         if (data.status == 200) {
-          let list = data.data.data,
+          let list = data.data,
             elem = document.getElementById("image-list")
-          pages = data.data.total_pages
+          pages = data.total_pages
           elem.innerHTML = ""
           list.forEach(function (movie) {
 
@@ -64,7 +67,7 @@ function listAPICall(page) {
                     <a href="#" class="modal-toggle">`+ movie.title + `</a>
                 </div>`
           })
-          resolve()
+          resolve(data)
         }
       },
     });
@@ -176,11 +179,10 @@ var countries = ["Flawless (1999)", "Miss Julie (1999)", "Ride with the Devil (1
 autocomplete(document.getElementById("myInput"), countries);
 
 function openModal(movieObj) {
-
   let movie = (typeof (movieObj) == 'string') ? JSON.parse(movieObj) : movieObj
   let elem = document.getElementById("modalMovieTitle"),
     url = window.location.href,
-    userId = parseInt(url.substring(url.indexOf('movies-trailer') + 15).match(/\d/g).join(""))
+    userId = parseInt(url.substring(url.indexOf('userId=') + 7))
   elem.innerHTML = movie.title
   elem = document.getElementById("youtubeVideoLink")
   let youtubeLink = "https://www.youtube.com/embed/" + movie.youtube_id,
@@ -217,7 +219,7 @@ function openModal(movieObj) {
 
 function closePopup(movie) {
   let url = window.location.href,
-    userId = parseInt(url.substring(url.indexOf('movies-trailer') + 15).match(/\d/g).join(""))
+    userId = parseInt(url.substring(url.indexOf('userId=') + 7))
   $('.modal').toggleClass('is-visible');
   let rating = $('input[name=rating]:checked').val()
 

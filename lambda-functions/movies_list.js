@@ -67,7 +67,6 @@ exports.handler = (event, context, callback) => {
     })
         .then(data => {
             console.log("data======================================", data.length)
-            console.log("data=========", JSON.stringify(data));
             // if (filter != "all") {
             //     data = data.filter(doc => {
             //         return doc.movie_collection != null
@@ -77,6 +76,7 @@ exports.handler = (event, context, callback) => {
             // }
 
             let response = {
+                "status": 200,
                 "total_pages": Math.ceil(data.length / 10),
                 "data": []
             }

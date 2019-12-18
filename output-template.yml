@@ -5,7 +5,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Runtime: nodejs10.x
-      CodeUri: s3://shazam-sam-templates/ceef048daf0f2eb0f1a646955b0b74de
+      CodeUri: s3://shazam-sam-templates/a8da94c09dbcd2b34ab26c8a6de29406
       Handler: movies_list.handler
       Events:
         HttpPost:
@@ -15,3 +15,9 @@ Resources:
             Method: get
       Policies:
       - CloudWatchLogsFullAccess
+Globals:
+  Api:
+    Cors:
+      AllowMethods: '''*'''
+      AllowHeaders: '''*'''
+      AllowOrigin: '''*'''
