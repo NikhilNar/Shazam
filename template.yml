@@ -29,7 +29,23 @@ Resources:
             Method: post
       Policies:
         - CloudWatchLogsFullAccess 
-        - AmazonSQSFullAccess                                       
+        - AmazonSQSFullAccess
+
+
+  LFViewAndRatingUpdater:
+    Type: AWS::Serverless::Function
+    Properties:
+      Runtime: python3.6
+      CodeUri: ./lambda-functions
+      Handler: view_rating_updater.handler
+      Events:
+        CloudwatchCronEvent:
+          Type: Schedule
+          Properties:
+            Schedule: rate(1 minute)
+      Policies:
+        - CloudWatchLogsFullAccess
+        - AmazonSQSFullAccess
   # InputValidatorAPI:
   #   Type: AWS::Serverless::Api
   #   Properties:
