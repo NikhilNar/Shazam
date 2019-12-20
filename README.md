@@ -4,7 +4,7 @@ When anyone wants to watch a movie and doesn’t know what to watch, they would 
 
 ## Architecture
 
-![CC-architecture](https://github.com/NikhilNar/Shazam/blob/master/CC-architecture.png)
+![CC-architecture](https://github.com/NikhilNar/Shazam/blob/master/shazam-architecture.png)
 
 
 
