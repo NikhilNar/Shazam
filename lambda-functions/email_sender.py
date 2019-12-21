@@ -12,7 +12,7 @@ FULL_HTML = '<!DOCTYPE html> ' \
             '* {box-sizing: border-box;} ' \
             '.column {float: left; width: 33.33%;padding: 10px; height: 300px;} ' \
             '.row {margin-bottom: 24px;} ' \
-            '.p {margin-bottom: 0px !important;} ' \
+            'p{margin-top: 0px !important; margin-bottom: 24px !important;}' \
             '.row:after {content: ""; display: table; clear: both;} ' \
             '</style> ' \
             '</head> ' \
@@ -30,6 +30,7 @@ DB_URI = "mongodb+srv://nikhil:nikhil@shazamdb-ci1rz.mongodb.net/test?retryWrite
 DB_NAME = "movie_analysis"
 COL_TRENDING = "trending_movies"
 COL_MOVIES = "movies"
+COL_USERS = "users"
 
 logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
@@ -61,6 +62,18 @@ def get_trending():
     logger.debug("HTML: {}".format(html_formatted))
     return html_formatted
 
+
+def get_to_addresses():
+    emails = []
+    myclient = pymongo.MongoClient(DB_URI)
+    mydb = myclient[DB_NAME]
+    users_collection = mydb[COL_USERS]
+    for user in users_collection.find():
+        if user.get('email'):
+            emails.append(user.get('email'))
+    return emails
+
+
 def handler(event, context):
     """
     Route the incoming request based on intent.
@@ -68,9 +81,11 @@ def handler(event, context):
     """
     logger.debug('Event received:{}'.format(event))
     html = get_trending()
-    send_email(html)
+    to_addresses = get_to_addresses()
+    logger.debug('To addresses:{}'.format(to_addresses))
+    send_email(html, to_addresses)
 
-def send_email(BODY_HTML):
+def send_email(BODY_HTML, to_addressess):
     # Create a new SES resource and specify a region.
     client = boto3.client('ses', region_name=AWS_REGION)
 
@@ -79,9 +94,7 @@ def send_email(BODY_HTML):
         # Provide the contents of the email.
         response = client.send_email(
             Destination={
-                'ToAddresses': [
-                    "surajgaikwadg@gmail.com",
-                ],
+                'ToAddresses': to_addressess,
             },
             Message={
                 'Body': {
