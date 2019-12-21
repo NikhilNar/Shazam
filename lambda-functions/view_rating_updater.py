@@ -36,7 +36,11 @@ def process_messages(messages):
 
         # Update rating
         if rating:
-            rating_dict = {"user_id": user_id, "movie_id": movie_id, "rating": rating,
+            try:
+                rating_float = float(rating)
+            except ValueError:
+                rating_float = 0.0
+            rating_dict = {"user_id": user_id, "movie_id": movie_id, "rating": rating_float,
                            "timestamp": dt_string}
             rating_list.append(rating_dict)
 

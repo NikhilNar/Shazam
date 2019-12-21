@@ -4,30 +4,40 @@ import boto3
 from botocore.exceptions import ClientError
 import logging
 
+FULL_HTML = '<!DOCTYPE html> ' \
+            '<html> ' \
+            '<head> ' \
+            '<meta name="viewport" content="width=device-width, initial-scale=1"> ' \
+            '<style>' \
+            '* {box-sizing: border-box;} ' \
+            '.column {float: left; width: 33.33%;padding: 10px; height: 300px;} ' \
+            '.row {margin-bottom: 24px;} ' \
+            '.p {margin-bottom: 0px !important;} ' \
+            '.row:after {content: ""; display: table; clear: both;} ' \
+            '</style> ' \
+            '</head> ' \
+            '<body> ' \
+            '<h2>Hi, these are the current trending Movies</h2> ' \
+            '{{REPLACE}}'\
+            '</body> </html>'
+
 SENDER = "Shazam Admin <surajgaikwadg@gmail.com>"
 AWS_REGION = "us-east-1"
 CHARSET = "UTF-8"
-SUBJECT = "Trending movies"
+SUBJECT = "Hi, New Trending movies are here."
 
 DB_URI = "mongodb+srv://nikhil:nikhil@shazamdb-ci1rz.mongodb.net/test?retryWrites=true&w=majority"
 DB_NAME = "movie_analysis"
-COL_TRENDING = "trending"
+COL_TRENDING = "trending_movies"
 COL_MOVIES = "movies"
 
 logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
 
-HTML_OPEN = '<html><head>' \
-            '<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">' \
-            '<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js">' \
-            '</script></head>' \
-            '<div class="container"><div class="examples row" id="image-list">'
-HTML_CLOSE = '</div></div></html>'
-
-
 def get_trending():
     myclient = pymongo.MongoClient(DB_URI)
     mydb = myclient[DB_NAME]
+    logger.debug("My DB: {}".format(mydb))
     trending_collection = mydb[COL_TRENDING]
     movies_collection = mydb[COL_MOVIES]
     movie_ids = []
@@ -36,17 +46,20 @@ def get_trending():
     logger.debug("Trending movie IDS: {}".format(movie_ids))
     movies = []
     for movie_id in movie_ids:
-        movie = movies_collection.find_one({'_id': movie_id})
+        movie = movies_collection.find_one({'movie_id': movie_id})
         movies.append(movie)
     logger.debug("Trending movies: {}".format(movies))
 
-    HTML = HTML_OPEN
+    HTML = '<div class="row">'
     for one_movie in movies:
-        HTML += '<div class="col-3 p-3"><div class="pb-2">'
-        HTML += '<img id="box1" src=' + one_movie['posters'] + ' class=" display-image" /></div</div>'
-    HTML += HTML_CLOSE
-
-    return HTML
+        HTML += '<div class ="column">'
+        HTML += '<img src = "' + one_movie['posters'] + '"; alt = "' + one_movie['title'] + '">'
+        HTML += '<p> ' + one_movie['title'] + '</p>'
+        HTML += '</div>'
+    HTML += '</div>'
+    html_formatted = FULL_HTML.replace("{{REPLACE}}", HTML)
+    logger.debug("HTML: {}".format(html_formatted))
+    return html_formatted
 
 def handler(event, context):
     """
