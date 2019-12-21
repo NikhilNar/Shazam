@@ -30,7 +30,21 @@ Resources:
       Policies:
         - CloudWatchLogsFullAccess 
         - AmazonSQSFullAccess
-
+  LFMovieSearch:
+    Type: AWS::Serverless::Function
+    Properties:
+      Runtime: nodejs10.x
+      CodeUri: ./lambda-functions
+      Handler: movies_search.handler
+      Events:
+        HttpPost:
+          Type: Api
+          Properties:
+            Path: '/movies-search'
+            Method: get
+      Policies:
+        - CloudWatchLogsFullAccess 
+        - AmazonESFullAccess 
 
   LFViewAndRatingUpdater:
     Type: AWS::Serverless::Function

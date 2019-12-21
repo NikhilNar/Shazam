@@ -5,7 +5,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Runtime: nodejs10.x
-      CodeUri: s3://shazam-sam-templates/76caa6cc1e6593b2a1c439fd65e1615b
+      CodeUri: s3://shazam-sam-templates/581918d9ba20f98c1f524efa7b612050
       Handler: movies_list.handler
       Events:
         HttpPost:
@@ -19,7 +19,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Runtime: nodejs10.x
-      CodeUri: s3://shazam-sam-templates/76caa6cc1e6593b2a1c439fd65e1615b
+      CodeUri: s3://shazam-sam-templates/581918d9ba20f98c1f524efa7b612050
       Handler: movies_views.handler
       Events:
         HttpPost:
@@ -30,11 +30,26 @@ Resources:
       Policies:
       - CloudWatchLogsFullAccess
       - AmazonSQSFullAccess
+  LFMovieSearch:
+    Type: AWS::Serverless::Function
+    Properties:
+      Runtime: nodejs10.x
+      CodeUri: s3://shazam-sam-templates/581918d9ba20f98c1f524efa7b612050
+      Handler: movies_search.handler
+      Events:
+        HttpPost:
+          Type: Api
+          Properties:
+            Path: /movies-search
+            Method: get
+      Policies:
+      - CloudWatchLogsFullAccess
+      - AmazonESFullAccess
   LFViewAndRatingUpdater:
     Type: AWS::Serverless::Function
     Properties:
       Runtime: python3.6
-      CodeUri: s3://shazam-sam-templates/76caa6cc1e6593b2a1c439fd65e1615b
+      CodeUri: s3://shazam-sam-templates/581918d9ba20f98c1f524efa7b612050
       Handler: view_rating_updater.handler
       Events:
         CloudwatchCronEvent:
@@ -48,13 +63,13 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Runtime: python3.6
-      CodeUri: s3://shazam-sam-templates/76caa6cc1e6593b2a1c439fd65e1615b
+      CodeUri: s3://shazam-sam-templates/581918d9ba20f98c1f524efa7b612050
       Handler: email_sender.handler
       Events:
         CloudwatchCronEvent:
           Type: Schedule
           Properties:
-            Schedule: rate(1 minute)
+            Schedule: rate(1 day)
       Policies:
       - CloudWatchLogsFullAccess
       - AmazonSQSFullAccess

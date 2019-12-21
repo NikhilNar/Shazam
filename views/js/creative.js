@@ -176,12 +176,32 @@ function autocomplete(inp, arr) {
   });
 }
 
-/*An array containing all the country names in the world:*/
-var countries = ["Flawless (1999)", "Miss Julie (1999)", "Ride with the Devil (1999)", "Hitch-Hiker, The (1953)", "End of the Affair, The (1999)", "GoldenEye (1995)", "Cutthroat Island (1995)", "Money Train (1995)", "Assassins (1995)"];
+$("#myInput").keyup(function () {
+  console.log("keyup called==========")
+  if ($("#myInput").val().length > 4) {
+    autoCompleteSearch();
+  }
+})
 
 /*initiate the autocomplete function on the "myInput" element, and pass along the countries array as possible autocomplete values:*/
-autocomplete(document.getElementById("myInput"), countries);
-
+function autoCompleteSearch() {
+  let searchValue = $("#myInput").val();
+  /*An array containing all the country names in the world:*/
+  $.ajax({
+    url: "https://s4g2kaqznk.execute-api.us-east-1.amazonaws.com/Prod/movies-search?query=" + searchValue,
+    method: "GET",
+    dataType: 'json',
+    contentType: "application/json",
+    success: function (data) {
+      console.log("data from API=======", data)
+      if (data.status == 200) {
+        var movies = data.data
+        console.log("movies===========", movies)
+        autocomplete(document.getElementById("myInput"), movies);
+      }
+    },
+  });
+}
 function openModal(movieObj) {
   let movie = (typeof (movieObj) == 'string') ? JSON.parse(movieObj) : movieObj
   let elem = document.getElementById("modalMovieTitle"),
