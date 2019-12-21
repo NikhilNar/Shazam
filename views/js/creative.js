@@ -19,6 +19,10 @@ function setGenre(value) {
   genre = value
 }
 
+$("#form-id").on('submit', function (e) {
+  e.preventDefault();
+})
+
 function reloadMovieList() {
 
   listAPICall(1)

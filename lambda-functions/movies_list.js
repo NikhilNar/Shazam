@@ -67,13 +67,13 @@ exports.handler = (event, context, callback) => {
     })
         .then(data => {
             console.log("data======================================", data.length)
-            // if (filter != "all") {
-            //     data = data.filter(doc => {
-            //         return doc.movie_collection != null
-            //     }).map(doc => {
-            //         return doc.movie_collection
-            //     })
-            // }
+            if (filter != "all") {
+                data = data.filter(doc => {
+                    return doc.movie_collection != null
+                }).map(doc => {
+                    return doc.movie_collection
+                })
+            }
 
             let response = {
                 "status": 200,

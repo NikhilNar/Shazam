@@ -5,7 +5,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Runtime: nodejs10.x
-      CodeUri: s3://shazam-sam-templates/31548103f16d187c24ffdefef5b2c36e
+      CodeUri: s3://shazam-sam-templates/76caa6cc1e6593b2a1c439fd65e1615b
       Handler: movies_list.handler
       Events:
         HttpPost:
@@ -19,7 +19,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Runtime: nodejs10.x
-      CodeUri: s3://shazam-sam-templates/31548103f16d187c24ffdefef5b2c36e
+      CodeUri: s3://shazam-sam-templates/76caa6cc1e6593b2a1c439fd65e1615b
       Handler: movies_views.handler
       Events:
         HttpPost:
@@ -34,7 +34,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Runtime: python3.6
-      CodeUri: s3://shazam-sam-templates/31548103f16d187c24ffdefef5b2c36e
+      CodeUri: s3://shazam-sam-templates/76caa6cc1e6593b2a1c439fd65e1615b
       Handler: view_rating_updater.handler
       Events:
         CloudwatchCronEvent:
@@ -44,12 +44,12 @@ Resources:
       Policies:
       - CloudWatchLogsFullAccess
       - AmazonSQSFullAccess
-  LFEMRJob:
+  LFEmailSender:
     Type: AWS::Serverless::Function
     Properties:
       Runtime: python3.6
-      CodeUri: s3://shazam-sam-templates/31548103f16d187c24ffdefef5b2c36e
-      Handler: spark_invoker.lambda_handler
+      CodeUri: s3://shazam-sam-templates/76caa6cc1e6593b2a1c439fd65e1615b
+      Handler: email_sender.handler
       Events:
         CloudwatchCronEvent:
           Type: Schedule
@@ -58,7 +58,7 @@ Resources:
       Policies:
       - CloudWatchLogsFullAccess
       - AmazonSQSFullAccess
-      - AmazonElasticMapReduceFullAccess
+      - AmazonSESFullAccess
   SQSViewsQueue:
     Type: AWS::SQS::Queue
     Properties:
