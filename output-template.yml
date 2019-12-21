@@ -5,7 +5,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Runtime: nodejs10.x
-      CodeUri: s3://shazam-sam-templates/d279d5b405a4ae96d80a7df0550816b4
+      CodeUri: s3://shazam-sam-templates/31548103f16d187c24ffdefef5b2c36e
       Handler: movies_list.handler
       Events:
         HttpPost:
@@ -19,7 +19,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Runtime: nodejs10.x
-      CodeUri: s3://shazam-sam-templates/d279d5b405a4ae96d80a7df0550816b4
+      CodeUri: s3://shazam-sam-templates/31548103f16d187c24ffdefef5b2c36e
       Handler: movies_views.handler
       Events:
         HttpPost:
@@ -30,6 +30,35 @@ Resources:
       Policies:
       - CloudWatchLogsFullAccess
       - AmazonSQSFullAccess
+  LFViewAndRatingUpdater:
+    Type: AWS::Serverless::Function
+    Properties:
+      Runtime: python3.6
+      CodeUri: s3://shazam-sam-templates/31548103f16d187c24ffdefef5b2c36e
+      Handler: view_rating_updater.handler
+      Events:
+        CloudwatchCronEvent:
+          Type: Schedule
+          Properties:
+            Schedule: rate(1 minute)
+      Policies:
+      - CloudWatchLogsFullAccess
+      - AmazonSQSFullAccess
+  LFEMRJob:
+    Type: AWS::Serverless::Function
+    Properties:
+      Runtime: python3.6
+      CodeUri: s3://shazam-sam-templates/31548103f16d187c24ffdefef5b2c36e
+      Handler: spark_invoker.lambda_handler
+      Events:
+        CloudwatchCronEvent:
+          Type: Schedule
+          Properties:
+            Schedule: rate(1 minute)
+      Policies:
+      - CloudWatchLogsFullAccess
+      - AmazonSQSFullAccess
+      - AmazonElasticMapReduceFullAccess
   SQSViewsQueue:
     Type: AWS::SQS::Queue
     Properties:

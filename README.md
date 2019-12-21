@@ -20,6 +20,10 @@ sam package --template-file template.yml --s3-bucket shazam-sam-templates --outp
 sam deploy --template-file output-template.yml --stack-name shazam --capabilities CAPABILITY_IAM 
 sam delete-stack --stack-name shazam
 
+## Command to run Spark job on EMR
+
+spark-submit --master local[*] --conf "spark.mongodb.input.uri=mongodb+srv://nikhil:nikhil@shazamdb-ci1rz.mongodb.net/" --conf "spark.mongodb.output.uri=mongodb+srv://nikhil:nikhil@shazamdb-ci1rz.mongodb.net/" --packages org.mongodb.spark:mongo-spark-connector_2.11:2.4.0 trending.py 
+
 ## Screenshots
 
 #### **Homescreen:**

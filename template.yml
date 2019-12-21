@@ -46,6 +46,7 @@ Resources:
       Policies:
         - CloudWatchLogsFullAccess
         - AmazonSQSFullAccess
+<<<<<<< HEAD
 
 
   LFEmailSender:
@@ -64,6 +65,9 @@ Resources:
         - AmazonSQSFullAccess
         - AmazonSESFullAccess
 
+=======
+        
+>>>>>>> EMR finished
   # InputValidatorAPI:
   #   Type: AWS::Serverless::Api
   #   Properties:
