@@ -40,7 +40,11 @@ def process_messages(messages):
                 rating_float = float(rating)
             except ValueError:
                 rating_float = 0.0
-            rating_dict = {"user_id": user_id, "movie_id": movie_id, "rating": rating_float,
+            try:
+                user_id_int = int(user_id)
+            except ValueError:
+                user_id_int = 1
+            rating_dict = {"user_id": user_id_int, "movie_id": movie_id, "rating": rating_float,
                            "timestamp": dt_string}
             rating_list.append(rating_dict)
 
