@@ -1,17 +1,10 @@
 # Shazam
 
-When anyone wants to watch a movie and doesn’t know what to watch, they would want to check the trailers of some trending movies around them or the top rated movies of all time. And sometimes, also rate a movie themselves. **Shazam** is an application that provides the best of both worlds. This application enables users to browse through trailers of top rated movies and trending movies, all in one place.
-
+When anyone wants to watch a movie and doesn’t know what to watch, they would want to check the trailers of some trending movies around them or the top rated movies of all time. Shazam is a web portal similar to Netflix where users can watch trailers of various movies. Users can also rate the youtube trailers. Users will be given a choice to watch the trending videos and highly rated movies through filters across genres. Shazam is deployed on AWS and comprises of various technologies like EC2, DynamoDB, ElasticSearch, Lambdas, SQS, Python, Node.js, PySpark.
 
 ## Architecture
 
 ![CC-architecture](https://github.com/NikhilNar/Shazam/blob/master/images/shazam-architecture.png)
-
-## Prototype
-
-You can check the prototype for the application here:
-
-https://chinmay609410.invisionapp.com/prototype/ck3uz6xaa004g6g01yvn0wr2h/play
 
 
 ## Commands to package and deploy SAM templates
@@ -33,6 +26,16 @@ spark-submit --master local[*] --conf "spark.mongodb.input.uri=mongodb+srv://nik
 #### **Trailer thumbnail:**
 
 ![Trailer-thumbnail](https://github.com/NikhilNar/Shazam/blob/master/images/1.png)
+
+You can check screens for the Shazam:
+
+https://chinmay609410.invisionapp.com/prototype/ck3uz6xaa004g6g01yvn0wr2h/play
+
+## Application
+
+For demo of the application, visit the YouTube link:
+
+https://www.youtube.com/watch?v=qJ7a99oaO8Y&t=6s
 
 
 ## Dataset
