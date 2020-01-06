@@ -37,6 +37,10 @@ For demo of the application, visit the YouTube link:
 
 https://www.youtube.com/watch?v=qJ7a99oaO8Y&t=6s
 
+Check out the **Medium** post for the entire application published in **Towards Data Science** here:<br>
+
+https://towardsdatascience.com/shazam-699a95d640f9
+
 
 ## Dataset
 
